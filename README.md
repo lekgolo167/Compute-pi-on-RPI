@@ -3,8 +3,9 @@ Compute pi on the raspberry pi up to 1000 digits and displays the result in the 
 Uses all threads on the pi.
 
 # Make a build directory cd to the build directory then run these commands to build
+<pre>
 cmake ..
 make
-
+</pre>
 # To run (accepts no arguments and defaults to 1000 or you can enter a number 1 to INT_MAX)
 ./ComputePi or ./ComputePi 2000
