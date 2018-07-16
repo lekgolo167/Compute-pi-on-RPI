@@ -32,36 +32,57 @@ void threadWorker(std::uint16_t threadNum, piThreader& eatPi) {
 void printPi(std::string number) {
  
     std::ifstream inFile;
+
     inFile.open("../pi.txt");
     if (inFile) {
-    int count = 0;
-    while (!inFile.eof()){
-        std::string ch = " ";
-        inFile >>  ch;
-        for (int i = 0; i < ch.length(); ++i){
-            if (ch[i] == '_'){
-                std::cout << " ";
-            }
-            else if (ch[i] == '*'){
-                std::cout << number[count];
-                ++count;
-            }
-            else {
-                    std::cout << ch[i];
+        int count = 0;
+        while (!inFile.eof()){
+            std::string ch = " ";
+            inFile >>  ch;
+            for (int i = 0; i < ch.length(); ++i){
+                if (ch[i] == '_'){
+                    std::cout << " ";
                 }
+                else if (ch[i] == '*'){
+                    if (count < number.length())
+                        std::cout << number[count];
+                    else
+                        std::cout << ch[i]; 
+                    ++count;
+                }
+                else {
+                        std::cout << ch[i];
+                    }
+                }
+                std::cout << std::endl;
+        }
+        inFile.close();
+        if (count < number.length()) { // if we computed more digits than than the pi graphic can hold then just output it
+            for (; count < number.length(); count++) {
+                std::cout << number[count];
             }
             std::cout << std::endl;
-    }
-    inFile.close();
+        }
     }
     else {
         std::cout << "3." << number << std::endl;
     }
 }
 
-int main(void) {
+int main(int argc, char* argv[]) {
+    int numOfDigitsToCompute = 1000;
 
-    piThreader eatPi(1000);
+    if (argc == 2) {
+        try {
+            std::string inputNumber = argv[1];
+		    numOfDigitsToCompute = stoi(inputNumber);
+	    }
+	    catch(...) {
+		    return 0;
+	    }
+    }
+    std::cout << "Computing to " << numOfDigitsToCompute << " digits!" << std::endl;
+    piThreader eatPi(numOfDigitsToCompute);
 
     // start clock
     std::chrono::time_point<std::chrono::high_resolution_clock> start = std::chrono::high_resolution_clock::now();
@@ -69,7 +90,7 @@ int main(void) {
     // Assign them to run our threadWorker function, and supply arguments as necessary for that function
 
 	std::vector<std::shared_ptr<std::thread>> threads;
-    
+
 	for (std::uint16_t core = 0; core < std::thread::hardware_concurrency(); core++)
         // The arguments you wish to pass to threadWorker are passed as
         // arguments to the constructor of std::thread

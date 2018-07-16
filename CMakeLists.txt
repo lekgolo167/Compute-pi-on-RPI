@@ -6,12 +6,10 @@ if (CMAKE_COMPILER_IS_GNUCXX)
 endif()
 
 add_executable(ComputePi
-	main.cpp
-	computePi.cpp
-	computePi.hpp
-	mutex.cpp
-	mutex.hpp
-
-    # Add files implementing your thread-safe data structures below
+	src/main.cpp
+	src/computePi.cpp
+	src/computePi.hpp
+	src/mutex.cpp
+	src/mutex.hpp
 )
 
