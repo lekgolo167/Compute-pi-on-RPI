@@ -67,7 +67,9 @@ int main(void) {
     std::chrono::time_point<std::chrono::high_resolution_clock> start = std::chrono::high_resolution_clock::now();
 	// Make as many threads as there are CPU cores
     // Assign them to run our threadWorker function, and supply arguments as necessary for that function
+
 	std::vector<std::shared_ptr<std::thread>> threads;
+    
 	for (std::uint16_t core = 0; core < std::thread::hardware_concurrency(); core++)
         // The arguments you wish to pass to threadWorker are passed as
         // arguments to the constructor of std::thread
