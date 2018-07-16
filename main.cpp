@@ -5,6 +5,7 @@
 #include <fstream>
 #include <string>
 #include <queue>
+#include <chrono>
 #include <unordered_map>
 
 #include "computePi.hpp"
@@ -62,6 +63,8 @@ int main(void) {
 
     piThreader eatPi(1000);
 
+    // start clock
+    std::chrono::time_point<std::chrono::high_resolution_clock> start = std::chrono::high_resolution_clock::now();
 	// Make as many threads as there are CPU cores
     // Assign them to run our threadWorker function, and supply arguments as necessary for that function
 	std::vector<std::shared_ptr<std::thread>> threads;
@@ -76,6 +79,11 @@ int main(void) {
 	for (auto&& thread : threads){
 		thread->join();
     }
+
+    // stop the clock and show how long it took
+    std::chrono::time_point<std::chrono::high_resolution_clock> end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> time = end - start;
+    std::cout << "\nRun-Time: " << time.count() << " seconds" << std::endl;
     std::cout << std::endl << std::endl;
     //
     // Convert unordered map<int, string> to string then use that
